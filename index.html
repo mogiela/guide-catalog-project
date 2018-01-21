@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mange Page</title>
+    <link rel="stylesheet" href="app.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+</head>
+<body ng-app = "iridizeApp" ng-controller = "appCtrl">
+    <div class="bckColor rightSize">
+        <form>
+            <input class="input-sm" type="text" ng-model="searchChoice">
+            <input class="button" type="button" value="Search Pages" ng-click="onSearchButtonPressed()">
+        </form>
+    </div>
+    <div class="bckColor left">
+        <select class="input-sm" ng-model="bulkChoice">
+            <option disabled selected hidden value="">Bulk Actions</option>
+            <option value="archive">Archive</option>
+            <option value="publish">Publish</option>
+            <option value="unpublish">Unpublish</option>
+        </select>
+        <button class="button" ng-click="onBulkButtonPressed()">Apply</button>
+    </div>
+
+    <div class="bckColor">
+        <select class="input-sm" ng-model="filterChoice">
+            <option ng-selected value= "">All Types</option>
+            <option ng-repeat="type in uniqueTypes">{{type}}</option>
+        </select>
+        <button class="button" ng-click="typeFilter.guide_type = filterChoice">Filter</button>
+    </div>
+
+    <div class="pull-right justify-content-end">
+        <dir-pagination-controls
+            max-size="5"
+            direction-links="true"
+            boundary-links="true" >
+        </dir-pagination-controls>
+    </div>
+
+    <div class="bckColor">
+        <table cellspacing="0" cellpadding="0">
+            <thead>
+                <tr>
+                    <th class="centered"><input type="checkbox" id="selectAll" ng-click = "onSelectAllClicked()"></th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Last updated date</th>
+                    <th>Last updated by</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody >
+                <tr dir-paginate = "row in rows | filter:typeFilter | itemsPerPage:guidesPerPage">
+                    <td class="centered"><input type="checkbox" id="{{row.apiName||row.api_name}}" ng-click = "onCheckBoxClicked()" ng-model="row.isChecked"></td>
+                    <td>
+                        <div class="bold">{{row.displayName || row.display_name}}</div>
+                        <div id="actionList">
+                           <ul>
+                               <li class="divide lowerRow" ng-click = "doGuideAction('edit')">Edit</li>
+                               <li class="divide lowerRow" ng-click = "doGuideAction('clone')">Clone</li>
+                               <li class="divide lowerRow" ng-click = "doGuideAction('preview')">Preview</li>
+                               <li class="divide lowerRow" ng-click = "doGuideAction('analytics')">Analytics</li>
+                               <li class="divide lowerRow" ng-click = "doGuideAction('archive')">Archive</li>
+                               <li class="divide lowerRow" ng-click = "doGuideAction('publish')">Publish</li>
+                               <li class="lowerRow" ng-click = "doGuideAction('unpublish')">Unpublish</li>
+                           </ul>
+                        </div>
+                    </td>
+                    <td>{{row.guide_type}}</td>
+                    <td>{{row.last_updated_date}}</td>
+                    <td>{{row.last_updated_by}}</td>
+                    <td>{{row.status}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="app.js"></script>
+    <script src="lib/dirPagination.js"></script>
+</body>
+</html>
