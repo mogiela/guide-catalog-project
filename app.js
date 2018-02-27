@@ -1,12 +1,12 @@
 var authConfig = {
     headers: {
-        Authorization: "Basic ZWxld2luc286RXlhbDMwMDc="
+        Authorization: "Basic "
     }
 };
 
-var app = angular.module("iridizeApp", ['angularUtils.directives.dirPagination']);
+var app = angular.module("myApp", ['angularUtils.directives.dirPagination']);
 app.controller("appCtrl", function ($scope, $http) {
-    $scope.baseUrl = "https://cs1.iridize.com/api/latest/app/8MXQlGj6R8Ogx2PohL9E+w/guide/";
+    $scope.baseUrl = "";
     $http.get($scope.baseUrl, authConfig).then(function (res) {
         $scope.rows = res.data;
         createFilterList();
